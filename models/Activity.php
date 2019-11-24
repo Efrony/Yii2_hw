@@ -4,15 +4,7 @@
 namespace app\models;
 
 
-use yii\base\Model;
-
-class Activity extends Model
+class Activity
 {
-    public $title;
-    public $dayStart;
-    public $dayEnd;
-    public $userID;
-    public $description;
-    public $repeat = false;
-    public $blocked;
+
 }
