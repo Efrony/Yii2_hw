@@ -61,6 +61,6 @@ sudo apt install docker-compose
 В общем терминале
 ps -ef | grep apache | grep -v grep
 
-В терминале запущенном в папке проекта
+В терминале запущенном в папке проекта, в папке/web/
 sudo chgrp www-data ./assets
 sudo chmod g+w ./assets/
