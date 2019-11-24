@@ -1,0 +1,66 @@
+
+открываешь терминал (внизу слева в "пуске")
+
+установка php: sudo apt install php7.2-cli
+
+установка композера: curl -sS https://getcomposer.org/installer | php
+
+перемещение композера (по инструкции): sudo mv composer.phar /usr/local/bin/composer
+
+установка какихто требуемых пакетов: 
+sudo apt-get update
+sudo apt-get install php7.2-mbstring
+sudo apt-get install php7.2-xml
+
+далее открываешь терминал (через контекстное меню) в папке своего проекта ДЗ:
+composer create-project --prefer-dist yiisoft/yii2-app-basic geek-yii2-calendar
+
+установка докера (можно из терминала на рабочем столе):
+
+sudo apt-get update
+
+sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+sudo add-apt-repository \
+   "deb https://download.docker.com/linux/ubuntu \
+   bionic \
+   stable"
+
+sudo apt update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+финальная проверка: sudo docker run hello-world
+
+добавление пользователя в группу на изменение докера. иначе в phpshtorm не будет коннекта (*<!!!!your username!!!!>* - заменить)
+sudo gpasswd -a $USER docker
+sudo setfacl -m user:*<!!!!your username!!!!>*:rw /var/run/docker.sock
+
+base=https://github.com/docker/machine/releases/download/v0.16.0 &&
+  curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
+  sudo mv /tmp/docker-machine /usr/local/bin/docker-machine &&
+  chmod +x /usr/local/bin/docker-machine
+
+sudo apt install docker-compose
+
+
+настройки в setting-build-docker-tools:
+/usr/bin/docker
+/usr/local/bin/docker-machine
+/usr/bin/docker-compose
+
+Запустить докер, потом запустить сервер как в видео на 1:18:00
+
+Если при запуске localchost:8000 ошибка с assets:
+В общем терминале
+ps -ef | grep apache | grep -v grep
+
+В терминале запущенном в папке проекта, в папке/web/
+sudo chgrp www-data ./assets
+sudo chmod g+w ./assets/
