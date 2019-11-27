@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c27f3be2-6073-4ba8-8bbf-6f39adf794fb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/views/activity/create.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/activity/form.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/activity/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/ActivityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/ActivityController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/SessionController.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/SiteController.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/SiteController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Activity.php" beforeDir="false" afterPath="$PROJECT_DIR$/models/Activity.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/activity/view.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/activity/view.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/layouts/main.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/layouts/main.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -139,7 +140,7 @@
           <expand>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@18b54eb7" type="9fbbdea:ServiceModel$ServiceNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@5c4ffbcb" type="9fbbdea:ServiceModel$ServiceNode" />
             </path>
           </expand>
           <select />
@@ -163,7 +164,8 @@
       <workItem from="1574590177850" duration="698000" />
       <workItem from="1574593009643" duration="12199000" />
       <workItem from="1574608341526" duration="868000" />
-      <workItem from="1574797287701" duration="4155000" />
+      <workItem from="1574797287701" duration="4731000" />
+      <workItem from="1574877372569" duration="4628000" />
     </task>
     <servers />
   </component>

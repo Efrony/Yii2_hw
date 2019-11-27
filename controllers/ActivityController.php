@@ -18,8 +18,7 @@ class ActivityController extends Controller
          * Просмотр списка событий
          * @return string
          */
-        $activityList = 'Список событий';
-        return $this->render('index', [$activityList]);
+        return $this->render('index');
     }
 
     /**
@@ -32,9 +31,9 @@ class ActivityController extends Controller
             'title' => 'Сотворение ДЗ',
             'day_start' => '2019-11-26',
             'day_end' => '2019-11-27',
-            'user_id' => 1,
+            'user_id' => 'id пользователя',
             'description' => 'Сижу ночью , пилю дз',
-            'repeat' => false,
+            'repeat' => true,
             'blocked' => true,
 
         ]);
@@ -48,7 +47,7 @@ class ActivityController extends Controller
     public function actionCreate()
     {
         $model = new Activity();
-        return $this->render('create', compact('model'));
+        return $this->render('create', ['model' => $model]);
     }
 
     public function actionSubmit()
