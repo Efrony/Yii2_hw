@@ -5,30 +5,54 @@ namespace app\controllers;
 
 
 use app\models\Activity;
-use yii\db\Query;
-use yii\db\QueryBuilder;
+use yii\filters\AccessControl;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
 use Yii;
-use yii\web\UploadedFile;
 
 class ActivityController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class, //ACF
+                'only' => ['index', 'view', 'create'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        //'actions' => ['logout'],
+                        'roles' => ['admin'], // role with Rbac
+                    ],
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['login', 'signup'],
+//                        'roles' => ['?'], //isGuest    ['@'], - !isGuest  (without Rbac)
+//                    ],
+                ],
+            ],
+        ];
+    }
+
+
     public function actionIndex($sort = false)
     {
+
 //        $db = Yii::$app->db;
 //        $rows = $db->createCommand('select * from activities')->queryAll();
 
-        $query = new Query();
-        $query->select('*')->from('activities');
+//        $query = new Query();
 
-        if($sort) {
+//        $query->select('*')->from('activities');
+        $query = Activity::find();
+
+        if ($sort) {
             $query->orderBy("id desc");
         }
         $rows = $query->all();
 
         return $this->render('index', [
-            'activities' =>$rows
+            'activities' => $rows
         ]);
     }
 
@@ -38,6 +62,7 @@ class ActivityController extends Controller
      */
     public function actionView($id)
     {
+
 //        $model = new Activity([
 //            'title' => 'Сотворение ДЗ',
 //            'day_start' => '2019-11-26',
@@ -71,12 +96,13 @@ class ActivityController extends Controller
     {
         $model = new Activity();
         if ($model->load(Yii::$app->request->post())) {
-            $model->attachments = UploadedFile::getInstance($model, 'attachments');
+            // $model->attachments = UploadedFile::getInstance($model, 'attachments');
 
             if ($model->validate()) {
-                $query = new QueryBuilder(Yii::$app->db);
-                $params =[];
-                $query->insert('activities', $model->attributes, $params);
+                $model->save();
+//                $query = new QueryBuilder(Yii::$app->db);
+//                $params =[];
+//                $query->insert('activities', $model->attributes, $params);
                 return "Success: " . VarDumper::export($model->attributes);
             } else {
                 return "Failed: " . VarDumper::export($model->errors);

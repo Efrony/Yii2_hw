@@ -6,7 +6,7 @@ namespace app\models;
 
 use yii\base\Model;
 
-class Activity extends Model
+class OldActivity extends Model
 {
     public $title;
     public $day_start;
