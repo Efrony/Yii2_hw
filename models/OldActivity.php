@@ -4,21 +4,18 @@
 namespace app\models;
 
 
-use yii\db\ActiveRecord;
+use yii\base\Model;
 
-
-/**
- * Class Activity
- * @package app\models
- *
- * @property-read User $user
- */
-class Activity extends ActiveRecord
+class OldActivity extends Model
 {
-    public static function tableName()
-    {
-        return 'activities';
-    }
+    public $title;
+    public $day_start;
+    public $day_end;
+    public $user_id;
+    public $description;
+    public $repeat = false;
+    public $blocked = true;
+    public $attachments;
 
     /**
      * Правила валидации данных модели
@@ -33,7 +30,7 @@ class Activity extends ActiveRecord
             [['day_start', 'day_end'], 'date', 'format' => 'php:Y-m-d'],
             [['user_id'], 'integer'],
             [['repeat', 'blocked'], 'boolean'],
-//            [['attachments'], 'file', 'maxFiles' => 3],
+            [['attachments'], 'file', 'maxFiles' => 3],
         ];
     }
 
@@ -54,10 +51,4 @@ class Activity extends ActiveRecord
             'attachments' => 'Прикрепленные файлы',
         ];
     }
-
-    public function getUser()
-    {
-        return $this->hasOne(User::class, ['id' => 'user_id']);
-    }
-
 }
