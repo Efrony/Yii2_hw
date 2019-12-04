@@ -92,6 +92,12 @@ class ActivityController extends Controller
         return $this->render('create', ['model' => $model]);
     }
 
+    public function actionEdit(int $id = null)
+    {
+        $model = $id ? Activity::findOne($id) : new Activity();
+        return $this->render('create', ['model' => $model]);
+    }
+
     public function actionSubmit()
     {
         $model = new Activity();

@@ -24,13 +24,16 @@ class Activity extends ActiveRecord
      * Правила валидации данных модели
      * @return array
      */
-    public function  rules()
+    public function rules()
     {
         return [
-            [['title', 'day_start', 'day_end', 'user_id', 'description'], 'required'],
+            [['title', 'day_start', 'user_id', 'description'], 'required'],
             [['title', 'description'], 'string'],
-            [['title'], 'string', 'min' => 1, 'max' => 150 ],
-            [['day_start', 'day_end'], 'date', 'format' => 'php:Y-m-d'],
+            [['title'], 'string', 'min' => 1, 'max' => 150],
+            [['day_start', 'day_end'], 'date', 'format' => \Yii::$app->params['dateFormat']],
+            ['day_end', 'default', 'value' => function () {
+                return $this->day_start;
+            }],
             [['user_id'], 'integer'],
             [['repeat', 'blocked'], 'boolean'],
 //            [['attachments'], 'file', 'maxFiles' => 3],

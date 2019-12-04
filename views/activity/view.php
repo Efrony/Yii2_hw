@@ -23,8 +23,8 @@ use yii\helpers\Html;
 <p>Описание: <?= Html::encode($model['description'])?></p>
 
 <ul>
-    <li>Дата начала: <?= $model['day_start']; ?></li>
-    <li>Дата окончания: <?= $model['day_end']; ?></li>
+    <li>Дата начала: <?= Yii::$app->formatter->asDate($model['day_start'], 'd.m.Y'); ?></li>
+    <li>Дата окончания: <?= Yii::$app->formatter->asDate($model['day_end'], 'd.m.Y'); ?></li>
     <li>Пользователь: <?= $model['user_id']; ?></li>
     <li>Повтор: <?= $model['repeat']; ?></li>
     <li>Блокировать другие события: <?= $model['blocked']; ?></li>
