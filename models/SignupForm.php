@@ -36,8 +36,8 @@ class SignupForm extends Model
             $user = new User([
                 'username' => $this->username,
                 'access_token' => "{$this->username}--token",
-                'created_at' => time(),
-                'updated_at' => time(),
+//                'created_at' => time(),
+//                'updated_at' => time(),
             ]);
 
             $user->generateAuthKey();

@@ -1,11 +1,49 @@
 <?php
 
 use yii\helpers\Html;
+use app\models\Activity;
+use yii\grid\SerialColumn;
+use yii\grid\GridView;
+use yii\grid\ActionColumn;
 
 /**
  * @var $this \yii\web\View
- * @var \app\models\Activity[] $activities
+ * @var $provider \yii\data\ActiveDataProvider
+ *
  */
+
+$columns = [
+    [
+        'class' => SerialColumn::class,
+        'header' => 'Псевдо-Порядковый номер'
+    ],
+
+    'title',
+    'day_start:date',
+    'user_id',
+    [
+        'label' => 'Имя создателя',
+        'attribute' => 'user.username',
+    ],
+    'repeat:boolean',
+    'blocked:boolean',
+
+];
+
+if (Yii::$app->user->can('admin')) {
+    $columns[] = [
+        'class' => ActionColumn::class,
+        'header' => 'Операции',
+        'template' => '{view} {update} {delete} {edit}',
+        'buttons' => [
+            'edit' => function($url, $model, $key) {
+                return Html::a('Edit', $url);
+            }
+
+        ],
+    ];
+}
+
 ?>
 
 <div class="row">
@@ -15,12 +53,9 @@ use yii\helpers\Html;
     </div>
 </div>
 
-<?php foreach ($activities as $item): ?>
-    <p><?= var_dump($item->title) ?>
-        <div>
-            <?= Html::a('Посмотреть', ["activity/view?id={$item->id}"], ['class' => 'btn btn-success']) ?>
-            <?= Html::a('Редактировать', ["activity/edit?id={$item->id}"], ['class' => 'btn btn-success']) ?>
-        </div>
-    </p>
-    <br>
-<?php endforeach; ?>
+<?= GridView::widget([
+    'dataProvider' => $provider,
+    'columns' => $columns
+]) ?>
+
+
