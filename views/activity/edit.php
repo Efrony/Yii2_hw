@@ -10,20 +10,20 @@ use yii\helpers\Html;
  */
 ?>
 
-<h1>Создать/Редактирвать событие</h1>
+<h1>Редактирвать событие</h1>
 <div class ="activity-form">
-    <?php $form = ActiveForm::begin(['action' => ["/activity/submit"]]);?>
+    <?php $form = ActiveForm::begin(['action' => ["/activity/submit?id={$model->id}"]]);?>
 
     <?= $form->field($model, 'title')->textInput(['autocomplete' => 'off']) ?>
     <?= $form->field($model, 'day_start')->textInput(['type' => 'date']) ?>
     <?= $form->field($model, 'day_end')->textInput(['type' => 'date']) ?>
-    <?php // $form->field($model, 'user_id')->textInput(['autocomplete' => 'off']) ?>
+    <?= $form->field($model, 'user_id')->textInput(['autocomplete' => 'off']) ?>
     <?= $form->field($model, 'description')->textarea(['rows' => 5]) ?>
     <?= $form->field($model, 'repeat')->checkbox() ?>
     <?= $form->field($model, 'blocked')->checkbox() ?>
 
     <div class="form-group" style="margin-top: 40px">
-        <?= Html::submitButton('Создать', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

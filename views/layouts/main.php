@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use app\widgets\Alert;
@@ -40,13 +41,18 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Главная', 'url' => ['/site/index']],
             ['label' => 'События', 'url' => ['/activity/index']],
+
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
+            ['label' => 'Регистрация', 'url' => ['/site/signup']]
+            ) : (''),
+
+            Yii::$app->user->isGuest ? (
+            ['label' => 'Войти', 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    'Выйти (' . Yii::$app->user->identity->username . ')',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()

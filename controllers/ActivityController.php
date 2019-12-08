@@ -5,6 +5,7 @@ namespace app\controllers;
 
 
 use app\models\Activity;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
@@ -17,42 +18,38 @@ class ActivityController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class, //ACF
-                'only' => ['index', 'view', 'create'],
+                'only' => ['index', 'view', 'edit', 'create', 'delete', 'submit'],
                 'rules' => [
+                    //  without Rbac
                     [
                         'allow' => true,
-                        //'actions' => ['logout'],
-                        'roles' => ['admin'], // role with Rbac
+                        // 'actions' => ['login', 'signup'],
+                        'roles' => ['@'], //!isGuest    ['?'], - isGuest
                     ],
+
+                    // role with Rbac
 //                    [
 //                        'allow' => true,
-//                        'actions' => ['login', 'signup'],
-//                        'roles' => ['?'], //isGuest    ['@'], - !isGuest  (without Rbac)
+//                        //'actions' => ['logout'],
+//                        'roles' => ['admin'],
 //                    ],
+
                 ],
             ],
         ];
     }
 
 
-    public function actionIndex($sort = false)
+    public function actionIndex()
     {
 
-//        $db = Yii::$app->db;
-//        $rows = $db->createCommand('select * from activities')->queryAll();
-
-//        $query = new Query();
-
-//        $query->select('*')->from('activities');
         $query = Activity::find();
-
-        if ($sort) {
-            $query->orderBy("id desc");
-        }
-        $rows = $query->all();
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
 
         return $this->render('index', [
-            'activities' => $rows
+            'provider' => $provider
         ]);
     }
 
@@ -62,24 +59,10 @@ class ActivityController extends Controller
      */
     public function actionView($id)
     {
-
-//        $model = new Activity([
-//            'title' => 'Сотворение ДЗ',
-//            'day_start' => '2019-11-26',
-//            'day_end' => '2019-11-27',
-//            'user_id' => 'id пользователя',
-//            'description' => 'Сижу ночью , пилю дз',
-//            'repeat' => true,
-//            'blocked' => true,
-//
-//        ]);
-
         $db = Yii::$app->db;
-        $model = $db->createCommand('select * from activities where id=:id', [
-            ':id' => $id,
-        ])->queryOne();
+        $model = Activity::findOne($id);
 
-        return $this->render('view', compact('model'));
+        return $this->render('view', ['model'=> $model]);
     }
 
     /**
@@ -92,17 +75,18 @@ class ActivityController extends Controller
         return $this->render('create', ['model' => $model]);
     }
 
-    public function actionSubmit()
+    public function actionEdit(int $id = null)
     {
-        $model = new Activity();
-        if ($model->load(Yii::$app->request->post())) {
-            // $model->attachments = UploadedFile::getInstance($model, 'attachments');
+        $model = $id ? Activity::findOne($id) : new Activity();
+        return $this->render('edit', ['model' => $model]);
+    }
 
+    public function actionSubmit(int $id = null)
+    {
+        $model = $id ? Activity::findOne($id) : new Activity();
+        if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
                 $model->save();
-//                $query = new QueryBuilder(Yii::$app->db);
-//                $params =[];
-//                $query->insert('activities', $model->attributes, $params);
                 return "Success: " . VarDumper::export($model->attributes);
             } else {
                 return "Failed: " . VarDumper::export($model->errors);

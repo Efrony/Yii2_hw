@@ -15,7 +15,7 @@ use yii\helpers\Html;
     <?= $form->field($model, 'title')->textInput(['autocomplete' => 'off']) ?>
     <?= $form->field($model, 'day_start')->textInput(['type' => 'date']) ?>
     <?= $form->field($model, 'day_end')->textInput(['type' => 'date']) ?>
-    <?= $form->field($model, 'user_id')->textInput(['autocomplete' => 'off']) ?>
+    <?php //$form->field($model, 'user_id')->textInput(['autocomplete' => 'off']) ?>
     <?= $form->field($model, 'description')->textarea(['rows' => 5]) ?>
     <?= $form->field($model, 'repeat')->checkbox() ?>
     <?= $form->field($model, 'blocked')->checkbox() ?>
