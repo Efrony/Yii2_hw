@@ -34,7 +34,6 @@ class RbacController extends Controller
         $auth->add($roleManager);
         $auth->addChild($roleManager, $roleUsers); // Менеджер наследует права Пользователя
 
-
         // Администратор
         $roleAdmin = $auth->createRole('admin');
         $roleAdmin->description = 'Администратор';
