@@ -10,6 +10,7 @@ use yii\filters\AccessControl;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 class ActivityController extends Controller
 {
@@ -18,22 +19,17 @@ class ActivityController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class, //ACF
-                'only' => ['index', 'view', 'edit', 'create', 'delete', 'submit'],
                 'rules' => [
-                    //  without Rbac
-                    [
+                    [ //  without Rbac
                         'allow' => true,
-                        // 'actions' => ['login', 'signup'],
+                        'actions' => ['index', 'view', 'edit', 'delete', 'submit'],
                         'roles' => ['@'], //!isGuest    ['?'], - isGuest
                     ],
 
-                    // role with Rbac
-//                    [
+//                    [   // role with Rbac
 //                        'allow' => true,
-//                        //'actions' => ['logout'],
 //                        'roles' => ['admin'],
 //                    ],
-
                 ],
             ],
         ];
@@ -62,7 +58,7 @@ class ActivityController extends Controller
         $db = Yii::$app->db;
         $model = Activity::findOne($id);
 
-        return $this->render('view', ['model'=> $model]);
+        return $this->render('view', ['model' => $model]);
     }
 
     /**
@@ -81,17 +77,24 @@ class ActivityController extends Controller
         return $this->render('edit', ['model' => $model]);
     }
 
-    public function actionSubmit(int $id = null)
+    public function actionSubmit($id = null)
     {
-        $model = $id ? Activity::findOne($id) : new Activity();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->validate()) {
-                $model->save();
-                return "Success: " . VarDumper::export($model->attributes);
-            } else {
-                return "Failed: " . VarDumper::export($model->errors);
+        $model = $id ? Activity::findOne($id) : new Activity([
+            'user_id' => Yii::$app->user->id,
+        ]);
+        //обновлять записи может только создатель, менеджер или админ
+        if ($model->user_id == Yii::$app->user->id || Yii::$app->user->can('manager') || Yii::$app->user->can('admin'))
+        {
+            if ($model->load(Yii::$app->request->post())) {
+                if ($model->validate()) {
+                    $model->save();
+                    return $this->redirect(['activity/view', 'id' => $model->id]);
+                    //return "Success: " . VarDumper::export($model->attributes);
+                }
+                return $this->render('edit', ['model' => $model]);
+                //return "Failed: " . VarDumper::export($model->errors);
             }
         }
-        return 'submit activity';
+         throw new NotFoundHttpException();
     }
 }
