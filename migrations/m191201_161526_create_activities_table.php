@@ -23,6 +23,16 @@ class m191201_161526_create_activities_table extends Migration
             'blocked' => $this->boolean(),
             // 'attachments'
         ]);
+
+        // создание реляционной связи на позьзователей
+        $this->addForeignKey(
+          'fk_activity_user',
+          'activity',
+          'user_id',
+          'user',
+          'id',
+          'cascade'
+        );
     }
 
     /**
