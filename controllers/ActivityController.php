@@ -62,7 +62,7 @@ class ActivityController extends Controller
         $db = Yii::$app->db;
         $model = Activity::findOne($id);
 
-        return $this->render('view', ['model'=> $model]);
+        return $this->render('view', ['model' => $model]);
     }
 
     /**
@@ -81,16 +81,17 @@ class ActivityController extends Controller
         return $this->render('edit', ['model' => $model]);
     }
 
-    public function actionSubmit(int $id = null)
+    public function actionSubmit($id = null)
     {
         $model = $id ? Activity::findOne($id) : new Activity();
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
                 $model->save();
-                return "Success: " . VarDumper::export($model->attributes);
-            } else {
-                return "Failed: " . VarDumper::export($model->errors);
+                return $this->redirect(['activity/view', 'id' => $model->id]);
+                //return "Success: " . VarDumper::export($model->attributes);
             }
+            return $this->render('edit', ['model' => $model]);
+            //return "Failed: " . VarDumper::export($model->errors);
         }
         return 'submit activity';
     }

@@ -47,10 +47,23 @@ class Activity extends ActiveRecord
             ['day_end', 'default', 'value' => function () {
                 return $this->day_start;
             }],
+            ['day_end', 'validateDate'],
             [['user_id'], 'integer'],
             [['repeat', 'blocked'], 'boolean'],
 //            [['attachments'], 'file', 'maxFiles' => 3],
         ];
+    }
+
+    public function validateDate($attr)
+    {
+        $start = strtotime($this->day_start);
+        $end = strtotime($this->{$attr});
+
+        if ($start && $end) {
+            if ($end < $start) {
+                $this->addError($attr, 'Дата окончания не может быть раньше даты начала');
+            }
+        }
     }
 
     /**
