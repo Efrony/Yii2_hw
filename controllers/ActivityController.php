@@ -59,10 +59,21 @@ class ActivityController extends Controller
      */
     public function actionView($id)
     {
-        $db = Yii::$app->db;
-        $model = Activity::findOne($id);
+        $cacheKey = "activity_{$id}";
 
-        return $this->render('view', ['model' => $model]);
+        if (Yii::$app->cache->exists($cacheKey)) {
+            $model = Yii::$app->cache->get($cacheKey);
+        } else {
+            $model = Activity::findOne($id);
+            Yii::$app->cache->set($cacheKey, $model);
+        }
+
+        // записи может просматривать только создатель или админ
+        if (Yii::$app->user->can('admin') || $model->user_id == Yii::$app->user->id) {
+            return $this->render('view', ['model' => $model]);
+        }
+        throw new NotFoundHttpException();
+
     }
 
     /**
