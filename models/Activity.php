@@ -4,9 +4,11 @@
 namespace app\models;
 
 
+use app\components\CachedRecordBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use Yii;
 
 
 /**
@@ -27,6 +29,10 @@ class Activity extends ActiveRecord
                 'updatedByAttribute' => 'user_id',
             ],
             TimestampBehavior::class,
+            [
+                'class' => CachedRecordBehavior::class,
+                'prefix' => 'activity',
+            ]
         ];
     }
 
@@ -89,6 +95,16 @@ class Activity extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public static function findOne($condition)
+    {
+        if (Yii::$app->cache->exists('activity_' . $condition)) {
+            //
+        } else {
+            $item = parent::findOne($condition);
+        }
+        return $item;
     }
 
 }
