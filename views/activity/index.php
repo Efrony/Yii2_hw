@@ -17,7 +17,7 @@ $columns = [
         'class' => SerialColumn::class,
         'header' => 'Псевдо-Порядковый номер'
     ],
-
+    'id',
     'title',
     'day_start:date',
     'user_id',

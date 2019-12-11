@@ -38,8 +38,12 @@ class ActivityController extends Controller
 
     public function actionIndex()
     {
-
         $query = Activity::find();
+
+        //добавим условие  на выборку  по пользователю. если это не менеджер
+        if(!Yii::$app->user->can('admin')) {
+            $query->andWhere(['user_id' => Yii::$app->user->id]);
+        }
         $provider = new ActiveDataProvider([
             'query' => $query,
         ]);

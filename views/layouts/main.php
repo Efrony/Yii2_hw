@@ -40,11 +40,16 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Главная', 'url' => ['/site/index']],
-            ['label' => 'События', 'url' => ['/activity/index']],
+            Yii::$app->user->can('admin') ? (
+                    ['label' => 'Пользователи', 'url' => ['/user/index']]
+            ) : (''),
 
             Yii::$app->user->isGuest ? (
-            ['label' => 'Регистрация', 'url' => ['/site/signup']]
-            ) : (''),
+                ['label' => 'Регистрация', 'url' => ['/site/signup']]
+            ) : ([
+                ['label' => 'События', 'url' => ['/activity/index']],
+                ['label' => 'Профиль', 'url' => ['/user/profile']],
+            ]),
 
             Yii::$app->user->isGuest ? (
             ['label' => 'Войти', 'url' => ['/site/login']]
