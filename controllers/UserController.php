@@ -2,7 +2,7 @@
 namespace app\controllers;
 use app\models\Activity;
 use app\models\SignupForm;
-use app\models\UpdateUserForm;
+use app\models\forms\UpdateUserForm;
 use app\models\User;
 use Yii;
 use yii\data\ActiveDataProvider;

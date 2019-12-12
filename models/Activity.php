@@ -9,6 +9,7 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use Yii;
+use yii\helpers\Url;
 
 
 /**
@@ -97,14 +98,31 @@ class Activity extends ActiveRecord
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
-    public static function findOne($condition)
-    {
-        if (Yii::$app->cache->exists('activity_' . $condition)) {
-            //
-        } else {
-            $item = parent::findOne($condition);
+    public static function findOne($condition){
+        if(Yii::$app->cache->exists("activity_".$condition)){
+            Yii::info("Значение найдено в кэше");
+            return Yii::$app->cache->get("activity_".$condition);
         }
-        return $item;
+        else{
+            Yii::info("Значение найдено в БД");
+            $result = parent::findOne($condition);
+            Yii::$app->cache->set("activity_".$condition, $result);
+            return $result;
+        }
     }
 
+    /**
+     * Преобразование в массив для календаря
+     * @return array
+     */
+    public function toEvent()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'start' => $this->day_start,
+            'end' => $this->day_end,
+            'url' => Url::to(['/activity/view', 'id' => $this->id]),
+        ];
+    }
 }
