@@ -49,6 +49,7 @@ AppAsset::register($this);
             ) : ([
                 ['label' => 'События', 'url' => ['/activity/index']],
                 ['label' => 'Профиль', 'url' => ['/user/profile']],
+                ['label' => 'Календарь', 'url' => ['/calendar/index']],
             ]),
 
             Yii::$app->user->isGuest ? (

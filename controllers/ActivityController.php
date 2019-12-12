@@ -11,6 +11,8 @@ use yii\helpers\VarDumper;
 use yii\web\Controller;
 use Yii;
 use yii\web\NotFoundHttpException;
+use yii\filters\PageCache;
+use yii\caching\DbDependency;
 
 class ActivityController extends Controller
 {
@@ -20,16 +22,22 @@ class ActivityController extends Controller
             'access' => [
                 'class' => AccessControl::class, //ACF
                 'rules' => [
-                    [ //  without Rbac
+                    [
                         'allow' => true,
                         'actions' => ['index', 'view', 'edit', 'delete', 'submit'],
                         'roles' => ['@'], //!isGuest    ['?'], - isGuest
                     ],
+                ],
+            ],
 
-//                    [   // role with Rbac
-//                        'allow' => true,
-//                        'roles' => ['admin'],
-//                    ],
+            // кеширование страницы index
+            [
+                'class' => PageCache::class,
+                'only' => ['index'],
+                'duration' => 120,
+                'dependency' => [
+                    'class' => DbDependency::class,
+                    'sql' => 'SELECT COUNT(*) FROM activity',
                 ],
             ],
         ];
